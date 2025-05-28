@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <link rel="stylesheet" href="piano.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>钢琴块游戏</title>
+</head>
+<body>
+    <!-- 登录界面 -->
+    <div id="login-screen" class="screen">
+        <div class="login-container">
+            <h1>钢琴块游戏</h1>
+            <div class="login-options">
+                <button id="anonymous-play" class="login-btn">游客模式</button>
+                <button id="login-play" class="login-btn">账号登录</button>
+            </div>
+            <div id="login-form" class="hidden">
+                <input type="text" id="username" placeholder="请输入用户名">
+                <button id="submit-login" class="login-btn">登录</button>
+            </div>
+            <button id="show-rules" class="nav-btn">游戏规则</button>
+        </div>
+    </div>
+
+    <!-- 规则界面 -->
+    <div id="rules-screen" class="screen hidden">
+        <div class="rules-container">
+            <h2>游戏规则</h2>
+            <ol>
+                <li>使用A(红)、S(绿)、D(黑)、F(蓝)键按下落的方块得分</li>
+                <li>按错键或错过方块算一次错误，错误3次游戏结束</li>
+                <li>每得10分速度增加</li>
+                <li>难度越高初始速度越快</li>
+            </ol>
+            <button id="back-to-login" class="nav-btn">返回登录</button>
+        </div>
+    </div>
+
+    <!-- 游戏主界面 -->
+    <div id="game-screen" class="screen hidden">
+        <div class="wrapper">
+            <div class="game-header">
+                <div class="user-info">
+                    <img id="user-avatar" src="default-avatar.png" alt="头像">
+                    <span id="username-display">游客</span>
+                </div>
+                <div class="score-display">
+                    分数: <span id="score">0</span>
+                </div>
+                
+                <div class="game-controls">
+                    <button id="settings-btn">游戏设置</button>
+                    <button id="profile-btn">我的信息</button>
+                    <button id="leaderboard-btn">排行榜</button>
+                </div>
+            </div>
+            <div class="judgment-line"></div> <!-- 添加判定线 -->
+            <div class="error-display">
+                错误: <span id="errors">0/3</span>
+            </div>
+            <div id="go">
+                <a href="javaScript:void(0)" id="start-btn">开始游戏</a>
+            </div>
+            <div id="main"></div>
+            
+        </div>
+    </div>
+
+    <!-- 设置界面 -->
+    <div id="settings-screen" class="screen hidden">
+        <div class="settings-container">
+            <h2>游戏设置</h2>
+            <div class="setting-group">
+                <label>游戏难度:</label>
+                <select id="difficulty">
+                    <option value="low">简单</option>
+                    <option value="medium" selected>中等</option>
+                    <option value="high">困难</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label>游戏音效:</label>
+                <input type="checkbox" id="sound-effects" checked>
+            </div>
+            <div class="setting-group">
+                <label>背景音乐:</label>
+                <input type="checkbox" id="background-music" checked>
+            </div>
+            <button id="save-settings" class="nav-btn">保存设置</button>
+            <button id="back-to-game" class="nav-btn">返回游戏</button>
+        </div>
+    </div>
+
+    <!-- 个人信息界面 -->
+    <div id="profile-screen" class="screen hidden">
+        <div class="profile-container">
+            <h2>我的信息</h2>
+            <div class="user-profile">
+                <label for="avatar-upload" class="avatar-upload-label">
+                    <img id="profile-avatar" src="default-avatar.png" alt="头像">
+                    <span>点击修改头像</span>
+                </label>
+                <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                <div id="profile-username">游客</div>
+                <div class="stats">
+                    <div>最高分: <span id="high-score">0</span></div>
+                    <div>游玩次数: <span id="play-count">0</span></div>
+                    <div>总得分: <span id="total-score">0</span></div>
+                </div>
+            </div>
+            <button id="back-to-game2" class="nav-btn">返回游戏</button>
+        </div>
+    </div>
+
+    <!-- 排行榜界面 -->
+    <div id="leaderboard-screen" class="screen hidden">
+        <div class="leaderboard-container">
+            <h2>排行榜</h2>
+            <table id="score-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>用户名</th>
+                        <th>最高分</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 分数将由JavaScript动态生成 -->
+                </tbody>
+            </table>
+            <button id="back-to-game3" class="nav-btn">返回游戏</button>
+        </div>
+    </div>
+    
+    <!-- 游戏结束界面 -->
+    <div id="game-over-screen" class="screen hidden">
+        <div class="game-over-container">
+            <h2>游戏结束</h2>
+            <div class="game-stats">
+                <p>本次得分: <span id="final-score">0</span></p>
+                <p>最高分: <span id="final-highscore">0</span></p>
+                <p>游玩次数: <span id="final-playcount">0</span></p>
+            </div>
+            <div class="game-over-buttons">
+                <button id="play-again-btn" class="action-btn">再玩一次</button>
+                <button id="view-profile-btn" class="action-btn">查看我的记录</button>
+                <button id="view-leaderboard-btn" class="action-btn">查看排行榜</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 音频元素 -->
+    <audio id="key-a-sound" src="sound/click.wav" preload="auto"></audio>
+    <audio id="key-s-sound" src="sound/click.wav" preload="auto"></audio>
+    <audio id="key-d-sound" src="sound/click.wav" preload="auto"></audio>
+    <audio id="key-f-sound" src="sound/click.wav" preload="auto"></audio>
+    <audio id="wrong-sound" src="sound/wrong.mp3" preload="auto"></audio>
+    <audio id="background-music" loop src="sound/bgm.mp3" preload="auto"></audio>
+
+    <script src="auth.js"></script>
+    <script src="data.js"></script>
+    <script src="piano.js"></script>
+</body>
+</html>
